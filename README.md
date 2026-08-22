@@ -2,6 +2,10 @@
 
 **Live demo: https://davidfigueroacisneros-byte.github.io/landscaping-landing-demo/**
 
+![Hero](docs/screenshot-hero.png)
+
+![The 3-Layer Build — animated SVG installation diagrams](docs/screenshot-layers.png)
+
 A high-conversion landing page for a **fictional** hardscape company ("Copperstone Pavers"), built as a portfolio demonstration. Single self-contained `index.html` — no build step, no dependencies.
 
 ## What it demonstrates
