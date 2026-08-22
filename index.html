@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Copperstone Pavers — Landing Page Demo</title>
+<meta name="description" content="Portfolio demo: high-conversion landing page for a fictional hardscape company, with animated SVG installation diagrams and a webhook-ready lead form.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #22262b;
+    --ink-soft: #5b6470;
+    --clay: #c2571b;
+    --clay-deep: #9c4413;
+    --sand: #f3eee4;
+    --sand-deep: #e7dfcf;
+    --paper: #fcfaf5;
+    --char: #23272e;
+    --char-2: #2c313a;
+    --on-dark: #f3eee4;
+    --on-dark-soft: rgba(243, 238, 228, 0.72);
+    --line: rgba(34, 38, 43, 0.12);
+    --moss: #5f7d4f;
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  h1, h2, h3, .display { font-family: "Fraunces", Georgia, serif; font-weight: 650; line-height: 1.12; letter-spacing: -0.01em; }
+  em { font-style: italic; }
+  img, svg { max-width: 100%; display: block; }
+  a { color: inherit; }
+
+  .wrap { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+  .section { padding: 88px 0; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--clay);
+  }
+  .dark .eyebrow { color: #e8905c; }
+  .h-xl { font-size: clamp(30px, 4.6vw, 52px); margin-top: 14px; }
+  .h-lg { font-size: clamp(26px, 3.6vw, 40px); margin-top: 14px; }
+  .sub { max-width: 62ch; margin-top: 16px; color: var(--ink-soft); font-size: 17px; }
+  .dark { background: var(--char); color: var(--on-dark); }
+  .dark .sub { color: var(--on-dark-soft); }
+  .center { text-align: center; }
+  .center .sub { margin-inline: auto; }
+
+  /* Demo ribbon */
+  .demo-ribbon {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--ink); color: var(--sand);
+    font-size: 13px; font-weight: 500;
+    text-align: center; padding: 8px 16px;
+  }
+  .demo-ribbon a { color: #f0a06f; font-weight: 600; }
+
+  /* Header */
+  header.site {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: "Fraunces", serif; font-size: 20px; font-weight: 650; }
+  .logo-mark { width: 30px; height: 30px; }
+  .btn {
+    display: inline-block;
+    font-weight: 600; font-size: 15.5px;
+    padding: 13px 24px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--clay); color: #fff; box-shadow: 0 6px 18px rgba(194, 87, 27, 0.32); }
+  .btn-primary:hover { background: var(--clay-deep); }
+  .btn-ghost { border: 1.5px solid var(--line); color: var(--ink); }
+  .dark .btn-ghost { border-color: rgba(243,238,228,0.28); color: var(--on-dark); }
+
+  /* Hero */
+  .hero { padding: 64px 0 88px; background: linear-gradient(180deg, var(--sand) 0%, var(--paper) 100%); }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+  .hero h1 { font-size: clamp(34px, 5vw, 58px); }
+  .hero h1 em { color: var(--clay); }
+  .hero-points { margin-top: 26px; display: grid; gap: 10px; list-style: none; }
+  .hero-points li { display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; color: var(--ink-soft); }
+  .hero-points svg { flex: none; margin-top: 3px; }
+  .hero-cta { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .hero-note { font-size: 13.5px; color: var(--ink-soft); }
+  .hero-art {
+    background: var(--char);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: 0 24px 60px rgba(34, 38, 43, 0.25);
+  }
+  .hero-art figcaption { color: var(--on-dark-soft); font-size: 13px; margin-top: 10px; text-align: center; }
+
+  /* Layers section */
+  .layers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 52px; }
+  .layer-card {
+    background: var(--char-2);
+    border: 1px solid rgba(243, 238, 228, 0.09);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .layer-num { font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #e8905c; }
+  .layer-card h3 { font-size: 21px; margin: 10px 0 16px; }
+  .layer-fig { background: var(--char); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .layer-card p { font-size: 14.5px; color: var(--on-dark-soft); }
+  .layer-why { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(243,238,228,0.12); font-size: 13px; }
+  .layer-why b { color: #e8905c; }
+
+  /* Process */
+  .process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .proc-list { list-style: none; margin-top: 40px; position: relative; display: grid; gap: 30px; }
+  .proc-list::before {
+    content: ""; position: absolute; left: 21px; top: 12px; bottom: 12px;
+    width: 2px; background: var(--line);
+  }
+  .proc-step { display: flex; gap: 20px; position: relative; }
+  .proc-num {
+    flex: none; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--sand); border: 2px solid var(--clay);
+    display: grid; place-items: center;
+    font-weight: 700; font-size: 15px; color: var(--clay);
+    position: relative; z-index: 1;
+  }
+  .proc-step h3 { font-size: 19px; }
+  .proc-step p { font-size: 14.5px; color: var(--ink-soft); margin-top: 4px; }
+
+  /* Care cards */
+  .care-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 48px; }
+  .care-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .care-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--sand); display: grid; place-items: center; color: var(--clay); }
+  .care-when { display: block; font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay); margin: 14px 0 6px; }
+  .care-card h3 { font-size: 19px; }
+  .care-card p { font-size: 14.5px; color: var(--ink-soft); margin-top: 8px; }
+
+  /* Form */
+  .form-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start; }
+  form { display: grid; gap: 16px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: 0 18px 44px rgba(34,38,43,0.08); }
+  label { font-size: 13.5px; font-weight: 600; display: grid; gap: 6px; }
+  input, select, textarea {
+    font: inherit; font-size: 15px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--clay); outline-offset: 1px; border-color: transparent; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-status { font-size: 14px; min-height: 20px; }
+  .form-status.ok { color: var(--moss); font-weight: 600; }
+  .form-status.err { color: #b3403a; font-weight: 600; }
+
+  footer { padding: 44px 0 60px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-soft); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  footer a { color: var(--clay); font-weight: 600; }
+
+  /* Scroll-in animation */
+  [data-anim] { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  [data-anim].in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-anim] { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+  @media (max-width: 900px) {
+    .hero-grid, .process-grid, .form-grid { grid-template-columns: 1fr; gap: 40px; }
+    .layers-grid, .care-grid { grid-template-columns: 1fr; }
+    .section { padding: 64px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-ribbon">
+  Portfolio demo — fictional company. Design &amp; code by
+  <a href="https://github.com/davidfigueroacisneros-byte" target="_blank" rel="noopener">David Figueroa</a>.
+</div>
+
+<div class="wrap">
+  <header class="site">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="2" y="18" width="13" height="9" rx="2" fill="#c2571b"/>
+        <rect x="17" y="18" width="13" height="9" rx="2" fill="#22262b"/>
+        <rect x="9" y="7" width="13" height="9" rx="2" fill="#8a6a4f"/>
+      </svg>
+      Copperstone <span style="color:var(--clay)">Pavers</span>
+    </div>
+    <a class="btn btn-primary" href="#quote">Get my free quote</a>
+  </header>
+</div>
+
+<!-- HERO -->
+<section class="hero" aria-label="Hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow" data-anim>Patios · Walkways · Driveways</span>
+      <h1 data-anim>A patio that stays flat for <em>20 years</em> — not 20 months.</h1>
+      <ul class="hero-points">
+        <li data-anim>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5f7d4f" stroke-width="2.4"><path d="M4 12l5 5L20 6"/></svg>
+          Engineered 3-layer base under every job — never pavers on dirt
+        </li>
+        <li data-anim>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5f7d4f" stroke-width="2.4"><path d="M4 12l5 5L20 6"/></svg>
+          Written scope and fixed price before we touch a shovel
+        </li>
+        <li data-anim>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5f7d4f" stroke-width="2.4"><path d="M4 12l5 5L20 6"/></svg>
+          30-day follow-up after install — we stay reachable
+        </li>
+      </ul>
+      <div class="hero-cta" data-anim>
+        <a class="btn btn-primary" href="#quote">Get my free quote →</a>
+        <span class="hero-note">Free on-site assessment · no pressure</span>
+      </div>
+    </div>
+    <figure class="hero-art" data-anim>
+      <!-- Hero cross-section: the finished 3-layer build, gently animated -->
+      <svg viewBox="0 0 460 260" role="img" aria-label="Cross-section of a finished paver installation: pavers on bedding sand, over a compacted gravel base, over native soil">
+        <style>
+          .hz-label { font: 600 11px "Inter", sans-serif; fill: rgba(243,238,228,0.85); }
+          .hz-glow { animation: hz-glow 3.6s ease-in-out infinite; }
+          @keyframes hz-glow { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.7; } }
+          @media (prefers-reduced-motion: reduce) { .hz-glow { animation: none; opacity: 0.4; } }
+        </style>
+        <!-- native soil -->
+        <rect x="0" y="205" width="460" height="55" fill="#31281f"/>
+        <circle cx="70" cy="228" r="3" fill="#4a3d2f"/><circle cx="180" cy="238" r="2.6" fill="#4a3d2f"/><circle cx="300" cy="226" r="3" fill="#4a3d2f"/><circle cx="400" cy="240" r="2.6" fill="#4a3d2f"/>
+        <!-- gravel base -->
+        <rect x="0" y="160" width="460" height="45" fill="#4d4437"/>
+        <g fill="#b8ab92" opacity="0.8">
+          <circle cx="30" cy="175" r="4"/><circle cx="66" cy="192" r="3.4"/><circle cx="104" cy="172" r="3.8"/><circle cx="140" cy="190" r="3.2"/><circle cx="178" cy="175" r="4"/><circle cx="214" cy="191" r="3.4"/><circle cx="252" cy="173" r="3.8"/><circle cx="288" cy="190" r="3.2"/><circle cx="326" cy="174" r="4"/><circle cx="362" cy="191" r="3.4"/><circle cx="398" cy="173" r="3.8"/><circle cx="434" cy="189" r="3.2"/>
+        </g>
+        <!-- bedding sand -->
+        <rect x="0" y="146" width="460" height="14" fill="#d9c9a3"/>
+        <!-- pavers -->
+        <g>
+          <rect x="4" y="112" width="70" height="32" rx="3" fill="#a45525"/>
+          <rect x="80" y="112" width="70" height="32" rx="3" fill="#8f4a20"/>
+          <rect x="156" y="112" width="70" height="32" rx="3" fill="#a45525"/>
+          <rect x="232" y="112" width="70" height="32" rx="3" fill="#96502a"/>
+          <rect x="308" y="112" width="70" height="32" rx="3" fill="#a45525"/>
+          <rect x="384" y="112" width="72" height="32" rx="3" fill="#8f4a20"/>
+        </g>
+        <!-- joint-sand glints -->
+        <g fill="#f3eee4">
+          <rect class="hz-glow" x="75" y="116" width="4" height="24" rx="2"/>
+          <rect class="hz-glow" x="227" y="116" width="4" height="24" rx="2" style="animation-delay:1.2s"/>
+          <rect class="hz-glow" x="379" y="116" width="4" height="24" rx="2" style="animation-delay:2.4s"/>
+        </g>
+        <!-- labels -->
+        <g>
+          <text class="hz-label" x="12" y="104">Pavers + locked joints</text>
+          <text class="hz-label" x="12" y="156" opacity="0.75">Screeded bedding sand</text>
+          <text class="hz-label" x="12" y="186" opacity="0.75">Compacted gravel base</text>
+          <text class="hz-label" x="12" y="250" opacity="0.55">Compacted native soil</text>
+        </g>
+      </svg>
+      <figcaption>The build that's under every Copperstone surface.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 3-LAYER SYSTEM -->
+<section class="section dark" id="system" aria-label="The 3-layer build">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow" data-anim>Our installation system</span>
+      <h2 class="h-xl" data-anim>The <em>3-Layer Build</em></h2>
+      <p class="sub" data-anim>Pavers don't fail because of the stone — they fail because of what's under it. Every job gets the same three layers: Base, Drainage, Lock.</p>
+    </div>
+
+    <div class="layers-grid">
+      <!-- Layer 1: BASE -->
+      <div class="layer-card" data-anim>
+        <span class="layer-num">Layer 01 · Base</span>
+        <h3>Excavated &amp; compacted foundation</h3>
+        <div class="layer-fig">
+          <svg viewBox="0 0 400 220" role="img" aria-label="Animation: ground is excavated, crushed gravel fills the cut, a plate compactor passes over it, then a bed of leveling sand is screeded flat">
+            <style>
+              .l1-gravel { transform: scaleY(0); transform-origin: 0 172px; animation: l1-rise 8s linear infinite; }
+              .l1-sand { transform: scaleX(0); transform-origin: 10px 0; animation: l1-screed 8s linear infinite; }
+              .l1-comp { transform: translateX(-90px); animation: l1-pass 8s linear infinite; }
+              .l1-shake { animation: l1-shake 0.14s steps(2) infinite; }
+              .l1-cut { stroke-dasharray: 6 6; animation: l1-cut 8s linear infinite; }
+              @keyframes l1-rise { 0%, 10% { transform: scaleY(0); } 22%, 94% { transform: scaleY(1); } 99%, 100% { transform: scaleY(0); } }
+              @keyframes l1-pass { 0%, 26% { transform: translateX(-90px); opacity: 0; } 30% { opacity: 1; } 56% { transform: translateX(450px); opacity: 1; } 57%, 100% { transform: translateX(450px); opacity: 0; } }
+              @keyframes l1-shake { 0% { transform: translateY(0); } 100% { transform: translateY(-2.4px); } }
+              @keyframes l1-screed { 0%, 60% { transform: scaleX(0); } 82%, 94% { transform: scaleX(1); } 99%, 100% { transform: scaleX(0); } }
+              @keyframes l1-cut { 0% { opacity: 0; } 5%, 92% { opacity: 1; } 98%, 100% { opacity: 0; } }
+              @media (prefers-reduced-motion: reduce) {
+                .l1-gravel { transform: scaleY(1); animation: none; }
+                .l1-sand { transform: scaleX(1); animation: none; }
+                .l1-comp { animation: none; opacity: 0; }
+                .l1-shake { animation: none; }
+                .l1-cut { animation: none; opacity: 1; }
+              }
+            </style>
+            <rect x="0" y="0" width="400" height="220" fill="#23272e"/>
+            <!-- native soil -->
+            <rect x="0" y="172" width="400" height="48" fill="#31281f"/>
+            <circle cx="58" cy="192" r="3" fill="#4a3d2f"/><circle cx="150" cy="202" r="2.6" fill="#4a3d2f"/><circle cx="252" cy="188" r="3" fill="#4a3d2f"/><circle cx="342" cy="200" r="2.6" fill="#4a3d2f"/>
+            <!-- excavation line -->
+            <line class="l1-cut" x1="10" y1="172" x2="390" y2="172" stroke="#f3eee4" stroke-opacity="0.5" stroke-width="1.5"/>
+            <!-- gravel -->
+            <g class="l1-gravel">
+              <rect x="10" y="132" width="380" height="40" fill="#4d4437"/>
+              <g fill="#b8ab92" opacity="0.85">
+                <circle cx="34" cy="144" r="4"/><circle cx="62" cy="158" r="3.3"/><circle cx="92" cy="142" r="3.8"/><circle cx="122" cy="159" r="3.1"/><circle cx="152" cy="145" r="4"/><circle cx="182" cy="158" r="3.4"/><circle cx="212" cy="143" r="3.7"/><circle cx="242" cy="158" r="3.2"/><circle cx="272" cy="145" r="4"/><circle cx="302" cy="159" r="3.3"/><circle cx="332" cy="143" r="3.8"/><circle cx="362" cy="157" r="3.2"/>
+              </g>
+            </g>
+            <!-- screeded sand -->
+            <rect class="l1-sand" x="10" y="120" width="380" height="12" fill="#d9c9a3"/>
+            <!-- plate compactor -->
+            <g class="l1-comp">
+              <g class="l1-shake">
+                <rect x="-30" y="114" width="60" height="13" rx="3" fill="#d8d3c6"/>
+                <rect x="-17" y="86" width="34" height="30" rx="5" fill="#c2571b"/>
+                <rect x="-3.5" y="54" width="7" height="34" rx="3.5" fill="#d8d3c6"/>
+                <rect x="-15" y="47" width="30" height="8" rx="4" fill="#d8d3c6"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <p>We excavate to engineered depth, compact the native soil, build a crushed-gravel base compacted in passes, and screed a level bed of sand — so every paver sits on structure, not dirt.</p>
+        <p class="layer-why"><b>Why it matters —</b> a thin or skipped base is why patios sink and wave within a year. It's the layer you never see, and the one that decides everything.</p>
+      </div>
+
+      <!-- Layer 2: DRAINAGE -->
+      <div class="layer-card" data-anim>
+        <span class="layer-num">Layer 02 · Drainage</span>
+        <h3>Graded so water walks away</h3>
+        <div class="layer-fig">
+          <svg viewBox="0 0 400 220" role="img" aria-label="Animation: rain falls on a patio surface graded away from the house; droplets run down the slope and drain off the far edge instead of pooling at the foundation">
+            <style>
+              .l2-drop { animation: l2-fall 1.8s linear infinite; }
+              .l2-b { animation-delay: 0.5s; } .l2-c { animation-delay: 1s; } .l2-d { animation-delay: 1.4s; } .l2-e { animation-delay: 0.25s; }
+              .l2-run { opacity: 0; animation: l2-run 2.7s ease-in infinite; }
+              .l2-r2 { animation-delay: 0.9s; } .l2-r3 { animation-delay: 1.8s; }
+              .l2-tag { animation: l2-pulse 4.4s ease-in-out infinite; }
+              @keyframes l2-fall { 0% { transform: translateY(-70px); opacity: 0; } 12% { opacity: 1; } 78% { transform: translateY(52px); opacity: 1; } 84%, 100% { transform: translateY(58px); opacity: 0; } }
+              @keyframes l2-run { 0%, 18% { transform: translateX(0); opacity: 0; } 26% { opacity: 1; } 74% { transform: translateX(150px) translateY(9px); opacity: 1; } 82%, 100% { transform: translateX(170px) translateY(11px); opacity: 0; } }
+              @keyframes l2-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+              @media (prefers-reduced-motion: reduce) { .l2-drop, .l2-run { animation: none; opacity: 0; } .l2-tag { animation: none; opacity: 0.9; } }
+            </style>
+            <rect x="0" y="0" width="400" height="220" fill="#23272e"/>
+            <!-- house -->
+            <rect x="14" y="52" width="86" height="98" fill="#3a3f48"/>
+            <polygon points="8,56 57,20 106,56" fill="#4d5460"/>
+            <rect x="40" y="106" width="30" height="44" rx="2" fill="#23272e"/>
+            <rect x="28" y="72" width="22" height="20" rx="2" fill="#8b95a5" opacity="0.5"/>
+            <rect x="64" y="72" width="22" height="20" rx="2" fill="#8b95a5" opacity="0.5"/>
+            <!-- sloped paver surface: 2% away from house -->
+            <polygon points="100,150 390,162 390,176 100,164" fill="#a45525"/>
+            <g stroke="#7d3f1c" stroke-width="2">
+              <line x1="148" y1="152" x2="148" y2="166"/>
+              <line x1="196" y1="154" x2="196" y2="168"/>
+              <line x1="244" y1="156" x2="244" y2="170"/>
+              <line x1="292" y1="158" x2="292" y2="172"/>
+              <line x1="340" y1="160" x2="340" y2="174"/>
+            </g>
+            <!-- base under slope -->
+            <polygon points="100,164 390,176 390,206 100,194" fill="#4d4437"/>
+            <rect x="0" y="194" width="400" height="26" fill="#31281f"/>
+            <!-- rain -->
+            <g fill="#7fb2d9">
+              <ellipse class="l2-drop" cx="160" cy="96" rx="3" ry="5"/>
+              <ellipse class="l2-drop l2-b" cx="215" cy="90" rx="3" ry="5"/>
+              <ellipse class="l2-drop l2-c" cx="268" cy="94" rx="3" ry="5"/>
+              <ellipse class="l2-drop l2-d" cx="322" cy="88" rx="3" ry="5"/>
+              <ellipse class="l2-drop l2-e" cx="360" cy="95" rx="3" ry="5"/>
+            </g>
+            <!-- runoff along the slope -->
+            <g fill="#7fb2d9">
+              <circle class="l2-run" cx="190" cy="150" r="3.4"/>
+              <circle class="l2-run l2-r2" cx="235" cy="152" r="3.4"/>
+              <circle class="l2-run l2-r3" cx="280" cy="154" r="3.4"/>
+            </g>
+            <!-- slope tag -->
+            <g class="l2-tag">
+              <text x="212" y="136" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#f3eee4">2% slope → away from the house</text>
+              <path d="M330 141 l26 2 -7 -6 m7 6 -8 4" stroke="#f3eee4" stroke-width="1.6" fill="none"/>
+            </g>
+          </svg>
+        </div>
+        <p>Every surface is graded a consistent 2% away from the structure. Rain sheets off the far edge — it never ponds against your foundation or sits in the joints.</p>
+        <p class="layer-why"><b>Why it matters —</b> standing water is what erodes bedding sand, stains stone, and heaves surfaces. Drainage is designed in, not hoped for.</p>
+      </div>
+
+      <!-- Layer 3: LOCK -->
+      <div class="layer-card" data-anim>
+        <span class="layer-num">Layer 03 · Lock</span>
+        <h3>Edged, sanded &amp; locked tight</h3>
+        <div class="layer-fig">
+          <svg viewBox="0 0 400 220" role="img" aria-label="Animation: polymeric sand pours into the joints between pavers, a final compactor pass settles it, and the edge restraint pins the field so nothing spreads">
+            <style>
+              .l3-pour { animation: l3-pour 7s linear infinite; }
+              .l3-fill { transform: scaleY(0); transform-origin: 0 148px; animation: l3-fill 7s linear infinite; }
+              .l3-f2 { animation-delay: 0.35s; } .l3-f3 { animation-delay: 0.7s; }
+              .l3-lockring { opacity: 0; animation: l3-lock 7s ease-out infinite; }
+              .l3-pin { animation: l3-pin 7s linear infinite; }
+              @keyframes l3-pour { 0%, 6% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 46% { transform: translateX(210px); opacity: 1; } 52%, 100% { transform: translateX(230px); opacity: 0; } }
+              @keyframes l3-fill { 0%, 12% { transform: scaleY(0); } 44%, 93% { transform: scaleY(1); } 99%, 100% { transform: scaleY(0); } }
+              @keyframes l3-lock { 0%, 55% { opacity: 0; transform: scale(0.6); transform-origin: 200px 128px; } 66%, 88% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+              @keyframes l3-pin { 0%, 40% { transform: translateY(-26px); opacity: 0; } 50%, 92% { transform: translateY(0); opacity: 1; } 98%, 100% { transform: translateY(-26px); opacity: 0; } }
+              @media (prefers-reduced-motion: reduce) {
+                .l3-pour { animation: none; opacity: 0; }
+                .l3-fill { transform: scaleY(1); animation: none; }
+                .l3-lockring { animation: none; opacity: 1; transform: none; }
+                .l3-pin { animation: none; transform: none; opacity: 1; }
+              }
+            </style>
+            <rect x="0" y="0" width="400" height="220" fill="#23272e"/>
+            <!-- base + soil -->
+            <rect x="0" y="176" width="400" height="44" fill="#31281f"/>
+            <rect x="20" y="162" width="360" height="14" fill="#4d4437"/>
+            <rect x="20" y="150" width="360" height="12" fill="#d9c9a3"/>
+            <!-- pavers -->
+            <g>
+              <rect x="24" y="112" width="80" height="38" rx="3" fill="#a45525"/>
+              <rect x="112" y="112" width="80" height="38" rx="3" fill="#8f4a20"/>
+              <rect x="200" y="112" width="80" height="38" rx="3" fill="#96502a"/>
+              <rect x="288" y="112" width="80" height="38" rx="3" fill="#a45525"/>
+            </g>
+            <!-- polymeric sand filling joints -->
+            <g fill="#e0d2ac">
+              <rect class="l3-fill" x="104" y="118" width="8" height="30"/>
+              <rect class="l3-fill l3-f2" x="192" y="118" width="8" height="30"/>
+              <rect class="l3-fill l3-f3" x="280" y="118" width="8" height="30"/>
+            </g>
+            <!-- pour bag -->
+            <g class="l3-pour">
+              <path d="M96 76 l24 0 -4 20 -16 0 z" fill="#d8d3c6"/>
+              <rect x="103" y="96" width="10" height="8" fill="#e0d2ac"/>
+              <circle cx="108" cy="108" r="2" fill="#e0d2ac"/>
+              <circle cx="106" cy="114" r="1.6" fill="#e0d2ac"/>
+            </g>
+            <!-- edge restraint pinned -->
+            <g class="l3-pin">
+              <rect x="368" y="132" width="14" height="30" rx="2" fill="#c2571b"/>
+              <rect x="372" y="120" width="6" height="16" rx="3" fill="#d8d3c6"/>
+            </g>
+            <!-- lock ring -->
+            <g class="l3-lockring" fill="none" stroke="#e8905c" stroke-width="2.4">
+              <circle cx="200" cy="128" r="26"/>
+              <path d="M191 128 l6 7 13 -14" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </div>
+        <p>Concrete edge restraint pins the field, polymeric sand locks every joint, and a final compaction pass seats the surface. Nothing shifts, spreads, or grows weeds.</p>
+        <p class="layer-why"><b>Why it matters —</b> an unlocked edge is how tight patios slowly spread into loose ones. The lock is what keeps year 10 looking like day 1.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" id="process" aria-label="How it works">
+  <div class="wrap process-grid">
+    <div>
+      <span class="eyebrow" data-anim>What happens next</span>
+      <h2 class="h-lg" data-anim>From first call to finished patio — <em>no guessing.</em></h2>
+      <p class="sub" data-anim>Four steps, all in writing, all on your timeline.</p>
+    </div>
+    <ol class="proc-list">
+      <li class="proc-step" data-anim>
+        <span class="proc-num">01</span>
+        <div><h3>You reach out</h3><p>Form or call — a real person answers the same business day.</p></div>
+      </li>
+      <li class="proc-step" data-anim>
+        <span class="proc-num">02</span>
+        <div><h3>Free on-site visit</h3><p>We measure, check drainage and access, and listen to what you actually want the space for.</p></div>
+      </li>
+      <li class="proc-step" data-anim>
+        <span class="proc-num">03</span>
+        <div><h3>Clear written plan</h3><p>Transparent scope and a fixed price you understand — no allowances, no surprises.</p></div>
+      </li>
+      <li class="proc-step" data-anim>
+        <span class="proc-num">04</span>
+        <div><h3>Installed &amp; supported</h3><p>The 3-Layer Build, a clean site every evening, and we stay reachable after the crew leaves.</p></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- FIRST 30 DAYS -->
+<section class="section dark" aria-label="The first 30 days">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow" data-anim>The first 30 days</span>
+      <h2 class="h-lg" data-anim>Most installers leave. <em>We check back.</em></h2>
+      <p class="sub" data-anim>The first weeks are when a new surface settles into daily use — and when a corner-cut base starts to show. Here's what we actually do.</p>
+    </div>
+    <div class="care-grid">
+      <div class="care-card" style="background:var(--char-2);border-color:rgba(243,238,228,0.09)" data-anim>
+        <span class="care-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>
+        <span class="care-when">Day 1</span>
+        <h3 style="color:var(--on-dark)">Walkthrough before we load the truck</h3>
+        <p style="color:var(--on-dark-soft)">We walk the finished surface with you — edges, joints, slope — and leave a short written care sheet for the curing period.</p>
+      </div>
+      <div class="care-card" style="background:var(--char-2);border-color:rgba(243,238,228,0.09)" data-anim>
+        <span class="care-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12a8 8 0 0 1-12 7l-5 1 1-5a8 8 0 1 1 16-3z"/></svg></span>
+        <span class="care-when">Week 1 → 4</span>
+        <h3 style="color:var(--on-dark)">We check in — you don't chase us</h3>
+        <p style="color:var(--on-dark-soft)">We follow up to confirm everything is settling flat and draining right through real weather — and catch anything early.</p>
+      </div>
+      <div class="care-card" style="background:var(--char-2);border-color:rgba(243,238,228,0.09)" data-anim>
+        <span class="care-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 4h3l2 5-2 1c1 3 3 5 6 6l1-2 5 2v3a2 2 0 0 1-2 2C9.8 21 3 14.2 3 6a2 2 0 0 1 2-2z"/></svg></span>
+        <span class="care-when">Any day</span>
+        <h3 style="color:var(--on-dark)">Reachable when it matters</h3>
+        <p style="color:var(--on-dark-soft)">Notice a low spot or washing joint sand? One message and we help you sort it before it becomes a problem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="section" id="quote" aria-label="Get a quote">
+  <div class="wrap form-grid">
+    <div>
+      <span class="eyebrow" data-anim>Free assessment</span>
+      <h2 class="h-lg" data-anim>Tell us about your project.</h2>
+      <p class="sub" data-anim>Fill this in and we'll come back the same business day with next steps. No pressure, no obligation — just a straight answer about what your space needs.</p>
+      <p class="sub" style="font-size:14px" data-anim><b>Demo note:</b> this form posts JSON to a configurable webhook (n8n, Make, Zapier, or any endpoint). In this demo it validates and simulates the send.</p>
+    </div>
+    <form id="leadForm" novalidate data-anim>
+      <div class="form-row">
+        <label>Name
+          <input type="text" name="name" required autocomplete="name" placeholder="Jane Smith">
+        </label>
+        <label>Phone
+          <input type="tel" name="phone" required autocomplete="tel" placeholder="(555) 555-0100">
+        </label>
+      </div>
+      <label>Email
+        <input type="email" name="email" required autocomplete="email" placeholder="jane@example.com">
+      </label>
+      <div class="form-row">
+        <label>Project type
+          <select name="project" required>
+            <option value="">Choose…</option>
+            <option>Patio</option>
+            <option>Walkway</option>
+            <option>Driveway</option>
+            <option>Pool deck</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Approx. size
+          <select name="size">
+            <option value="">Not sure</option>
+            <option>Under 200 sq ft</option>
+            <option>200–500 sq ft</option>
+            <option>500–1,000 sq ft</option>
+            <option>Over 1,000 sq ft</option>
+          </select>
+        </label>
+      </div>
+      <label>Anything else we should know?
+        <textarea name="notes" rows="3" placeholder="Slope, access, existing surface, timeline…"></textarea>
+      </label>
+      <button class="btn btn-primary" type="submit">Request my free assessment →</button>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© Copperstone Pavers — a <b>fictional company</b> created as a portfolio demo.</div>
+    <div>Design &amp; code: <a href="https://github.com/davidfigueroacisneros-byte" target="_blank" rel="noopener">David Figueroa</a> · <a href="https://github.com/davidfigueroacisneros-byte/landscaping-landing-demo" target="_blank" rel="noopener">View source</a></div>
+  </div>
+</footer>
+
+<script>
+  // Scroll-in animations (respects prefers-reduced-motion via CSS)
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }
+  }, { threshold: 0.15 });
+  document.querySelectorAll('[data-anim]').forEach(el => io.observe(el));
+
+  // Lead form → webhook.
+  // Point WEBHOOK_URL at your n8n / Make / Zapier / custom endpoint to go live.
+  const WEBHOOK_URL = ''; // e.g. 'https://your-n8n-host.example.com/webhook/lead'
+
+  const form = document.getElementById('leadForm');
+  const status = document.getElementById('formStatus');
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    status.className = 'form-status';
+    if (!form.reportValidity()) return;
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+    payload.source = 'landing-demo';
+    payload.submittedAt = new Date().toISOString();
+
+    try {
+      if (WEBHOOK_URL) {
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+      } else {
+        // Demo mode: no endpoint configured — simulate latency and log the payload.
+        await new Promise(r => setTimeout(r, 600));
+        console.log('Demo submission (configure WEBHOOK_URL to send for real):', payload);
+      }
+      status.textContent = "Got it! We'll get back to you the same business day.";
+      status.classList.add('ok');
+      form.reset();
+    } catch (err) {
+      status.textContent = "Something went wrong sending the form — please try again or call us.";
+      status.classList.add('err');
+    }
+  });
+</script>
+</body>
+</html>
